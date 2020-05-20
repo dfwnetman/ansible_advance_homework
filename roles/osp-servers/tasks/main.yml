@@ -34,14 +34,16 @@
     loop_var: t_os_server
     label: "{{ t_os_server.name }}"
 
-- name: Wait for server to be available
-  wait_for:
-    host: "{{ t_os_server.name }}"
-    port: 22
-    search_regex: OpenSSH
-    timeout: 600
-  loop: "{{ osp_servers }}"
-  loop_control:
-    loop_var: t_os_server
-    label: "{{ t_os_server.name }}"
+# DFW -- ADD floating_ip to vars, and add 'floating_ip_address:' to "Add floating IP to Servers" task above
+# DFW -- Then wait for 't_os_server.floating_ip' NOT 't_os_server.name'
+#- name: Wait for server to be available
+#  wait_for:
+#    host: "{{ t_os_server.name }}"
+#    port: 22
+#    search_regex: OpenSSH
+#    timeout: 600
+#  loop: "{{ osp_servers }}"
+#  loop_control:
+#    loop_var: t_os_server
+#    label: "{{ t_os_server.name }}"
 
