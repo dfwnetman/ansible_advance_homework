@@ -1,2 +1,3 @@
 ---
 # defaults file for base-config
+three_tier_common_enable_repos: true

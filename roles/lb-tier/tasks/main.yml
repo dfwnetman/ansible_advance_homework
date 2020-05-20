@@ -1,2 +1,29 @@
 ---
 # tasks file for lb-tier
+- name: deploy haproxy
+  hosts: frontends,apps
+  gather_facts: true
+  become: true
+  hosts: frontends
+  tasks:
+  - name: Install software with yum
+    yum:
+      name:
+      - haproxy
+      - python2-httpie
+      state: latest
+  when: three_tier_frontend_install_software | bool
+
+  - name: configure haproxy
+    template:
+      src: haproxy.cfg.j2
+      dest: /etc/haproxy/haproxy.cfg
+    notify: restart-haproxy
+  
+  - name: Start and enable HAProxy
+    service:
+      name: haproxy
+      state: started
+      enabled: true
+
+
