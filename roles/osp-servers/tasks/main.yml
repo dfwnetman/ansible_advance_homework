@@ -5,8 +5,8 @@
   os_server:
     name: "{{ t_os_server.name }}"
     meta:
-      group: "{{ t_os_server.meta.group }}"
-      deployment_name: "{{ t_os_server.meta.deployment_name }}"
+      group: "{{ t_os_server.meta[0].group }}"
+      deployment_name: "{{ t_os_server.meta[0].deployment_name }}"
     flavor: "{{ t_os_server.flavor }}"
     key_name: "{{ t_os_server.key_name }}"
     network: int_network
