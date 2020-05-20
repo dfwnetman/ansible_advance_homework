@@ -12,7 +12,7 @@
       - haproxy
       - python2-httpie
       state: latest
-  when: three_tier_frontend_install_software
+    when: three_tier_frontend_install_software
 
   - name: configure haproxy
     template:

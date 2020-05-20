@@ -1,2 +1,40 @@
 ---
 # tasks file for db-tier
+- name: deploy postgres
+  hosts: apps
+  gather_facts: false
+  become: true
+  hosts: appdbs
+  tasks:
+  - name: install progress
+    command: "yum install -y postgresql-server"
+
+  #- name: install postgres
+  #  yum:
+  #    name: postgresql-server
+  #    state: latest
+
+  - name: enable postgresql at boot
+    service:
+      name: postgresql
+      enabled: yes
+
+  - name: stat pgsql data dir
+    stat:
+      path: /var/lib/pgsql/data
+    register: pgsql_data_dir_res
+
+ # only run the next 2 tasks once!
+  - name: initilize postgres
+    command: postgresql-setup initdb
+    register: r_postgres_init
+    failed_when: >-
+      r_postgres_init.rc != 0 and
+      r_postgres_init.stdout != 'Data directory is not empty!'
+    when: "{{ not pgsql_data_dir_res.stat.exists}}"
+
+  - name: start postgres
+    service:
+      name: postgresql.service
+      state: started
+
