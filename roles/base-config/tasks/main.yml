@@ -10,6 +10,6 @@
       src: open_three-tier-app.repo
       dest: /etc/yum.repos.d/open_three-tier-app.repo
       mode: u=rw,g=r,o=r
-    when: three_tier_common_enable_repos | bool
+    when: three_tier_common_enable_repos
 
 
