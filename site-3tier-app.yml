@@ -37,7 +37,7 @@
 
 - name: setup database tier
   hosts: apps
-  gather_facts: false
+  gather_facts: true
   become: true
   hosts: appdbs
   roles:
