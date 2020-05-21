@@ -8,20 +8,6 @@
       state: latest
     when: three_tier_frontend_install_software
 
-  - name: Fetch Instance Info
-    os_server_facts:
-     cloud: ospcloud
-     server: app*
-    register: app_srv
-
-  - name: Build dict of private IPs
-    set_fact:
-      app_srv_private_ips: "{{ app_srv_private_ips|default({}) | combine( {t_os_server.name: t_os_server.private_v4} ) }}"
-    loop: "{{ app_srv.ansible_facts.openstack_servers }}"
-    loop_control:
-      loop_var: t_os_server
-      label: "{{ t_os_server.name }}"
-
   - name: configure haproxy
     template:
       src: haproxy.cfg.j2
