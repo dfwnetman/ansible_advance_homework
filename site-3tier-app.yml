@@ -22,7 +22,6 @@
   roles:
   - {name: base-config, tags: base-config}
   - {name: lb-tier, tags: [lbs, haproxy]}
-  #########################################
 
 # Setup application servers tier
 
@@ -33,13 +32,14 @@
   roles:
   - {name: base-config, tags: base-config}
   - {name: app-tier, tags: [apps, tomcat]}
-  #########################################
 
 # Setup database tier
 
-#DFW#- name: setup database tier
-#DFW#  become: yes
-#DFW#  hosts: appdbs
-#DFW#  roles:
-#DFW#    - {name: base-config, tags: base-config}
-#DFW#    - {name: db-tier, tags: [dbs, postgres]}
+- name: setup database tier
+  hosts: apps
+  gather_facts: false
+  become: true
+  hosts: appdbs
+  roles:
+  - {name: base-config, tags: base-config}
+  - {name: db-tier, tags: [dbs, postgres]}

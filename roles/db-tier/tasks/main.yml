@@ -1,11 +1,6 @@
 ---
 # tasks file for db-tier
-- name: deploy postgres
-  hosts: apps
-  gather_facts: false
-  become: true
-  hosts: appdbs
-  tasks:
+# Deploy postgres
   - name: install progress
     command: "yum install -y postgresql-server"
 
