@@ -1,11 +1,6 @@
 ---
 # tasks file for app-tier
-- name: deploy tomcat
-  hosts: apps
-  gather_facts: false
-  become: true
-
-  tasks:
+# Deploy tomcat
   - name: install tomcat
     package:
       name: tomcat
@@ -31,12 +26,7 @@
       name: tomcat
       state: started
 
-- name: index.html on app 1
-  hosts: app1
-  gather_facts: false
-  become: true
-
-  tasks:
+# Create index.html on app VMs
   - name: create ansible tomcat directory
     file:
       path: /usr/share/tomcat/webapps/ansible
@@ -44,31 +34,10 @@
 
   - name: copy static index.html to tomcat webapps/ansible/index.html
     template:
-      src: index.html.app1
+      src: index.html.app.j2
       dest: /usr/share/tomcat/webapps/ansible/index.html
 
-- name: index.html on app 1
-  hosts: app2
-  gather_facts: false
-  become: true
-
-  tasks:
-  - name: create ansible tomcat directory
-    file:
-      path: /usr/share/tomcat/webapps/ansible
-      state: directory
-
-  - name: copy static index.html to tomcat webapps/ansible/index.html
-    template:
-      src: index.html.app2
-      dest: /usr/share/tomcat/webapps/ansible/index.html
-
-- name: deploy apache
-  hosts: apps
-  gather_facts: false
-  become: true
-  hosts: apps
-  tasks:
+# Deploy apache
   - name: install apache
     yum:
       name: httpd
