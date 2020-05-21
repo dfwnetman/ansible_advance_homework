@@ -1,7 +1,19 @@
 ---
+
+- hosts: localhost
+  tasks:
+  - name: Create workstation inventory
+    add_host:
+       name: "workstation-{{OSP_GUID}}.rhpds.opentlc.com"
+       group: workstation
+       ansible_user: cloud-user
+       ansible_ssh_private_key_file:  "/root/.ssh/openstack.pem"
+
 - hosts: workstation
   become: true
   gather_facts: false
+  vars_files:
+    - opentlc_secret.yml
   tasks:
     - name: create bin directory
       file:
@@ -27,7 +39,7 @@
       copy:
         content: |
           export username={{ param_user }}
-          export password={{ param_password }}
+          export password={{ opentlc_pwd }}
           export uri=https://labs.opentlc.com
         dest: /root/credential.rc
         mode: 0755
