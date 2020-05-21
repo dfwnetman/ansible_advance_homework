@@ -29,6 +29,7 @@
   os_floating_ip:
     server: "{{ t_os_server.name }}"
     network: ext_network
+    floating_ip_address: "{{ t_os_server.floating_ip }}"
   loop: "{{ osp_servers }}"
   loop_control:
     loop_var: t_os_server
