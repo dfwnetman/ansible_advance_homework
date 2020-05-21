@@ -25,7 +25,6 @@ backend app-servers
   mode http
   balance roundrobin
   option forwardfor
-{% for appsrv in groups[three_tier_frontend_app_group_name] %}
-  server {{ appsrv }} {{ hostvars[appsrv].ansible_default_ipv4.address }}:8080 cookie {{ appsrv }} check
-{% endfor %}
+  server app1 20.20.20.12:8080 cookie app1 check
+  server app2 20.20.20.3:8080 cookie app2 check
 
