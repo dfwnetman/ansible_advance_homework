@@ -25,6 +25,8 @@ backend app-servers
   mode http
   balance roundrobin
   option forwardfor
-  server app1 20.20.20.12:8080 cookie app1 check
-  server app2 20.20.20.3:8080 cookie app2 check
+{% for appsrv in groups[three_tier_frontend_app_group_name] %}   
+  server {{ appsrv }} {{ app_srv_private_ips[appsrv] }}:8080 cookie {{ appsrv }} check
+{% endfor %}
+
 
