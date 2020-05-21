@@ -14,19 +14,20 @@
       name: postgresql
       enabled: yes
 
-  - name: stat pgsql data dir
-    stat:
-      path: /var/lib/pgsql/data
+  - name: Check pgsql data dir
+    find: 
+      paths: /var/lib/pgsql/data
+      file_type: directory
+      patterns: "*"
     register: pgsql_data_dir_res
 
- # only run the next 2 tasks once!
   - name: initilize postgres
     command: postgresql-setup initdb
     register: r_postgres_init
     failed_when: >-
       r_postgres_init.rc != 0 and
       r_postgres_init.stdout != 'Data directory is not empty!'
-    when: "{{ not pgsql_data_dir_res.stat.exists}}"
+    when: pgsql_data_dir_res.matched|int == 0
 
   - name: start postgres
     service:
