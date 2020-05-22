@@ -1,46 +1,47 @@
 ---
 
 # tasks file for osp.servers
-- name: Create new server instances and attaches them a network and passes metadata to the instance
-  os_server:
-    name: "{{ t_os_server.name }}"
-    meta:
-      group: "{{ t_os_server.meta[0].group }}"
-      deployment_name: "{{ t_os_server.meta[0].deployment_name }}"
-    flavor: "{{ t_os_server.flavor }}"
-    key_name: "{{ t_os_server.key_name }}"
-    network: int_network
-    image: "{{ t_os_server.image }}"
-    security_groups: "{{ t_os_server.security_group }}"
-    userdata: |
-      #!/bin/bash
-      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
-      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
-      curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
-      cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
-  loop: "{{ osp_servers }}"
-  loop_control:
-    loop_var: t_os_server
-    label: "{{ t_os_server.name }}"
+#DFW#- name: Create new server instances and attaches them a network and passes metadata to the instance
+#DFW#  os_server:
+#DFW#    name: "{{ t_os_server.name }}"
+#DFW#    meta:
+#DFW#      group: "{{ t_os_server.meta[0].group }}"
+#DFW#      deployment_name: "{{ t_os_server.meta[0].deployment_name }}"
+#DFW#    flavor: "{{ t_os_server.flavor }}"
+#DFW#    key_name: "{{ t_os_server.key_name }}"
+#DFW#    network: int_network
+#DFW#    image: "{{ t_os_server.image }}"
+#DFW#    security_groups: "{{ t_os_server.security_group }}"
+#DFW#    userdata: |
+#DFW#      #!/bin/bash
+#DFW#      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+#DFW#      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
+#DFW#      curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+#DFW#      cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
+#DFW#  loop: "{{ osp_servers }}"
+#DFW#  loop_control:
+#DFW#    loop_var: t_os_server
+#DFW#    label: "{{ t_os_server.name }}"
 
 
 
-- name: Add floating IP to Servers
-  os_floating_ip:
-    server: "{{ t_os_server.name }}"
-    network: ext_network
-    floating_ip_address: "{{ t_os_server.floating_ip }}"
-  loop: "{{ osp_servers }}"
-  loop_control:
-    loop_var: t_os_server
-    label: "{{ t_os_server.name }}"
+#DFW#- name: Add floating IP to Servers
+#DFW#  os_floating_ip:
+#DFW#    server: "{{ t_os_server.name }}"
+#DFW#    network: ext_network
+#DFW#    floating_ip_address: "{{ t_os_server.floating_ip }}"
+#DFW#  loop: "{{ osp_servers }}"
+#DFW#  loop_control:
+#DFW#    loop_var: t_os_server
+#DFW#    label: "{{ t_os_server.name }}"
 
 - name: Wait for server to be available
   wait_for:
-    host: "{{ t_os_server.floating_ip }}"
+    host: "{{ osp_srv_public_ips[t_os_server.name] }}"
     port: 22
     search_regex: OpenSSH
-    timeout: 600
+    #DFW#timeout: 600
+    timeout: 10
   loop: "{{ osp_servers }}"
   loop_control:
     loop_var: t_os_server
