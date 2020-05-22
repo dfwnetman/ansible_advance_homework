@@ -8,23 +8,6 @@
        ansible_ssh_private_key_file:  "/root/.ssh/openstack.pem"
 
 - hosts: workstation
-  gather_facts: true
-  tasks:
-  - name: Fetch Instance Info
-    os_server_facts:
-      cloud: ospcloud
-      region_name: RegionOne
-    register: osp_srv
-
-  - name: Build dict of public IPs
-    set_fact:
-      osp_srv_public_ips: "{{ osp_srv_public_ips|default({}) | combine( {t_os_server.name: t_os_server.public_v4} ) }}"
-    loop: "{{ osp_srv.ansible_facts.openstack_servers }}"
-    loop_control:
-      loop_var: t_os_server
-      label: "{{ t_os_server.name }}"
-
-- hosts: workstation
   become: yes
   roles:
     - osp-servers
