@@ -26,7 +26,7 @@ backend app-servers
   balance roundrobin
   option forwardfor
 {% for appsrv in groups[three_tier_frontend_app_group_name] %}   
-  server {{ appsrv }} {{ app_srv_private_ips[appsrv] }}:8080 cookie {{ appsrv }} check
+  server {{ appsrv }} {{ dummy_priv_ip }}:8080 cookie {{ appsrv }} check
 {% endfor %}
 
 
