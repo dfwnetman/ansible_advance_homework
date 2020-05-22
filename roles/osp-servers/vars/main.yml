@@ -6,7 +6,6 @@ osp_servers:
     image: rhel-guest
     key_name: ansible_ssh
     flavor: m2.small
-    floating_ip: 10.10.10.9
     security_group: frontend
     meta:
       - { group: frontends, deployment_name: QA}
@@ -15,7 +14,6 @@ osp_servers:
     image: rhel-guest
     key_name: ansible_ssh
     flavor: m2.small
-    floating_ip: 10.10.10.13
     security_group: apps
     meta:
       - { group: apps, deployment_name: QA}
@@ -24,7 +22,6 @@ osp_servers:
     image: rhel-guest
     key_name: ansible_ssh
     flavor: m2.small
-    floating_ip: 10.10.10.6
     security_group: apps
     meta:
       - { group: apps, deployment_name: QA}
@@ -33,7 +30,6 @@ osp_servers:
     image: rhel-guest
     key_name: ansible_ssh
     flavor: m2.small
-    floating_ip: 10.10.10.16
     security_group: db
     meta:
       - { group: appdbs, deployment_name: QA}
