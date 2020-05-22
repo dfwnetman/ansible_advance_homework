@@ -16,13 +16,13 @@
       region_name: RegionOne
     register: osp_srv
 
-  - name: Build dict of private IPs
+  - name: Build dict of public IPs
     set_fact:
       osp_srv_public_ips: "{{ osp_srv_public_ips|default({}) | combine( {t_os_server.name: t_os_server.public_v4} ) }}"
     loop: "{{ osp_srv.ansible_facts.openstack_servers }}"
     loop_control:
-      loop_var: t_os_ssite-osp-instances.ymlerver
-      label: "{{ t_os_server.name }}site-osp-instances.yml"
+      loop_var: t_os_server
+      label: "{{ t_os_server.name }}"
 
 - hosts: workstation
   become: yes
