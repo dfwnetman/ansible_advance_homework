@@ -8,13 +8,6 @@
       state: latest
     when: three_tier_frontend_install_software
 
-  - name: DFW Print app_srv_private_ips
-    debug: msg="{{ app_srv_private_ips }}"
-
-  - name: DFW Try setting on the fly
-    set_fact: 
-      dummy_priv_ip: 20.20.20.999
-
   - name: configure haproxy
     template:
       src: haproxy.cfg.j2
