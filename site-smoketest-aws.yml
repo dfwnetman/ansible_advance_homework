@@ -1,92 +1,18 @@
 - hosts: frontends,apps
   gather_facts: true
-
-  vars: 
-    three_tier_frontend_app_group_name: apps
-
   tasks:
-  - name: Print facts AWS
-    debug:
-      msg: "{% for appsrv in groups[three_tier_frontend_app_group_name] %}
-              server {{ hostvars[appsrv].ansible_hostname }} {{ hostvars[appsrv].inventory_hostname }}:8080 cookie {{ hostvars[appsrv].ansible_hostname }} check
-             {% endfor %}"
-    when: >-
-      'frontends' in group_names and ansible_virtualization_type!='openstack'
+- hosts: frontends
+  gather_facts: false
+  tasks:
+  - name: Use Uri module for wrting smoke test.
+    uri:
+      url: "http://{{ inventory_hostname }}"
+      return_content: yes
+    register: webpage
 
+  - name: Fail if 'Ansible has done its job' is not in the page content
+    fail:
+    when: "'Ansible has done its job' not in webpage.content"
+    tags:
+      - osp.smoke
 
-  - name: Print facts OSP
-    debug:
-      msg: "{% for appsrv in groups[three_tier_frontend_app_group_name] %}
-              server {{ hostvars[appsrv].ansible_hostname }} {{ hostvars[appsrv].ansible_default_ipv4.address }}:8080 cookie {{ hostvars[appsrv].ansible_hostname }} check
-             {% endfor %}"
-    when: >-
-      'frontends' in group_names and ansible_virtualization_type=='openstack'
-
-
-#  - name: Print ALL facts for 54_157_217_106
-#    debug:
-#      msg: "{{ hostvars['54.157.217.106'] }}"
-#    when: >-
-#      'frontends' in group_names
-
-
-
-#DFW A#
-#DFW A#- hosts: frontends
-#DFW A#  gather_facts: false
-#DFW A#  tasks:
-#DFW A#  - name: Get status of haproxy
-#DFW A#    command:
-#DFW A#      systemctl status haproxy
-#DFW A#    register: haproxy_status
-#DFW A#
-#DFW A#  - name: Print haproxy status
-#DFW A#    debug: msg="{{ haproxy_status }}"
-#DFW A#
-#DFW A#  - name: Get haproxy logs
-#DFW A#    command:
-#DFW A#      journalctl -lu haproxy -o cat
-#DFW A#    register: haproxy_logs
-#DFW A#  - name: Print haproxy logs
-#DFW A#    debug: msg="{{ haproxy_logs }}"
-#DFW A#
-#DFW A#  - name: Get haproxy servers
-#DFW A#    command:
-#DFW A#      grep server  /etc/haproxy/haproxy.cfg
-#DFW A#    register: haproxy_servers
-#DFW A#  - name: Print haproxy servers
-#DFW A#    debug: msg="{{ haproxy_servers }}"
-#DFW A#
-#DFW A#
-#DFW A#- hosts: apps
-#DFW A#  gather_facts: false
-#DFW A#  tasks:
-#DFW A#  - name: Check backend app on port 8080 
-#DFW A#    uri:
-#DFW A#      url: "http://{{ inventory_hostname }}:8080"
-#DFW A#      return_content: yes
-#DFW A#    register: webpage
-#DFW A#
-#DFW A#  - name: Print backend result
-#DFW A#    debug: msg="{{ webpage }}"
-#DFW A#
-
-
-
-
-#DFW B#
-#DFW B#- hosts: frontends
-#DFW B#  gather_facts: false
-#DFW B#  tasks:
-#DFW B#  - name: Use Uri module for wrting smoke test.
-#DFW B#    uri:
-#DFW B#      url: "http://{{ inventory_hostname }}"
-#DFW B#      return_content: yes
-#DFW B#    register: webpage
-#DFW B#
-#DFW B#  - name: Fail if 'Ansible has done its job' is not in the page content
-#DFW B#    fail:
-#DFW B#    when: "'Ansible has done its job' not in webpage.content"
-#DFW B#    tags:
-#DFW B#      - osp.smoke
-#DFW B#
