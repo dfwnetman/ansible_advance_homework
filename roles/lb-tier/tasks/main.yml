@@ -8,10 +8,18 @@
       state: latest
     when: three_tier_frontend_install_software
 
-  - name: configure haproxy
+  - name: Configure OSP/QA haproxy
     template:
       src: haproxy.cfg.j2
       dest: /etc/haproxy/haproxy.cfg
+    when: ansible_virtualization_type=='openstack'
+    notify: restart-haproxy
+  
+  - name: Configure AWS/Prod haproxy
+    template:
+      src: haproxy.cfg_aws.j2
+      dest: /etc/haproxy/haproxy.cfg
+    when: ansible_virtualization_type!='openstack'
     notify: restart-haproxy
   
   - name: Start and enable HAProxy
