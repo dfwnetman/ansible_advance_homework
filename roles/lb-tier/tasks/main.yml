@@ -18,9 +18,11 @@
   - name: Print AWS/Prod hostvars
     debug:
       msg: "{% for appsrv in groups[three_tier_frontend_app_group_name] %}
-              {{ hostvars[appsrv] }}
+              {{ hostvars[appsrv].ec2_tag_aws_cloudformation_logical_id }}
              {% endfor %}"
     when: ansible_virtualization_type!='openstack'
+
+
 
 #  - name: Configure AWS/Prod haproxy
 #    template:
