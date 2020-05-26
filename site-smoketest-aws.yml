@@ -1,5 +1,9 @@
 - hosts: frontends,apps
   gather_facts: true
+
+  vars: 
+    three_tier_frontend_app_group_name: apps
+
   tasks:
   - name: Print facts
     debug:
