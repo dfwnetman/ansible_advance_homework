@@ -18,7 +18,8 @@
   - name: Print AWS/Prod hostvars
     debug:
       msg: "{{ % for appsrv in groups[three_tier_frontend_app_group_name] %}
-              server {{ hostvars[appsrv] }}"
+              server {{ hostvars[appsrv] }}
+             {% endfor %}"
     when: ansible_virtualization_type!='openstack'
 
 #  - name: Configure AWS/Prod haproxy
