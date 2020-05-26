@@ -15,12 +15,18 @@
     when: ansible_virtualization_type=='openstack'
     notify: restart-haproxy
   
-  - name: Configure AWS/Prod haproxy
-    template:
-      src: haproxy.cfg_aws.j2
-      dest: /etc/haproxy/haproxy.cfg
+  - name: Print AWS/Prod hostvars
+    debug:
+      msg: "{{ % for appsrv in groups[three_tier_frontend_app_group_name] %}
+              server {{ hostvars[appsrv] }}"
     when: ansible_virtualization_type!='openstack'
-    notify: restart-haproxy
+
+#  - name: Configure AWS/Prod haproxy
+#    template:
+#      src: haproxy.cfg_aws.j2
+#      dest: /etc/haproxy/haproxy.cfg
+#    when: ansible_virtualization_type!='openstack'
+#    notify: restart-haproxy
   
   - name: Start and enable HAProxy
     service:
