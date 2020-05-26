@@ -8,13 +8,20 @@
       state: latest
     when: three_tier_frontend_install_software
 
-  - name: Configure OSP/QA haproxy
-    template:
-      src: haproxy.cfg.j2
-      dest: /etc/haproxy/haproxy.cfg
-    when: ansible_virtualization_type=='openstack'
-    notify: restart-haproxy
+#DFW#  - name: Configure OSP/QA haproxy
+#DFW#    template:
+#DFW#      src: haproxy.cfg.j2
+#DFW#      dest: /etc/haproxy/haproxy.cfg
+#DFW#    when: ansible_virtualization_type=='openstack'
+#DFW#    notify: restart-haproxy
   
+  - name: Print OSP/QA hostvars
+    debug:
+      msg: "{% for appsrv in groups[three_tier_frontend_app_group_name] %}
+              {{ hostvars[appsrv] }}
+             {% endfor %}"
+    when: ansible_virtualization_type=='openstack'
+
   - name: Print AWS/Prod hostvars
     debug:
       msg: "{% for appsrv in groups[three_tier_frontend_app_group_name] %}
