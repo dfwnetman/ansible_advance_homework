@@ -5,19 +5,29 @@
     three_tier_frontend_app_group_name: apps
 
   tasks:
-  - name: Print facts
+  - name: Print facts AWS
     debug:
       msg: "{% for appsrv in groups[three_tier_frontend_app_group_name] %}
-              server {{ hostvars[appsrv].ansible_hostname }} {{ hostvars[appsrv].inventory_hostname}}:8080 cookie {{ hostvars[appsrv].ansible_hostname }} check
+              server {{ hostvars[appsrv].ansible_hostname }} {{ hostvars[appsrv].inventory_hostname }}:8080 cookie {{ hostvars[appsrv].ansible_hostname }} check
              {% endfor %}"
     when: >-
-      'frontends' in group_names
+      'frontends' in group_names and ansible_virtualization_type!='openstack'
 
-  - name: Print ALL facts for 54_157_217_106
+
+  - name: Print facts OSP
     debug:
-      msg: "{{ hostvars['54.157.217.106'] }}"
+      msg: "{% for appsrv in groups[three_tier_frontend_app_group_name] %}
+              server {{ hostvars[appsrv].ansible_hostname }} {{ hostvars[appsrv].ansible_default_ipv4.address }}:8080 cookie {{ hostvars[appsrv].ansible_hostname }} check
+             {% endfor %}"
     when: >-
-      'frontends' in group_names
+      'frontends' in group_names and ansible_virtualization_type=='openstack'
+
+
+#  - name: Print ALL facts for 54_157_217_106
+#    debug:
+#      msg: "{{ hostvars['54.157.217.106'] }}"
+#    when: >-
+#      'frontends' in group_names
 
 
 
