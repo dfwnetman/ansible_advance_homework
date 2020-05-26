@@ -1,14 +1,47 @@
 - hosts: frontends
   gather_facts: false
   tasks:
-  - name: Use Uri module for wrting smoke test.
+  - name: Get status of haproxy
+    command:
+      systemctl status haproxy
+    register: haproxy_status
+
+  - name: Print haproxy status
+    debug: msg="{{ haproxy_status }}"
+
+  - name: Get haproxy logs
+    command:
+      journalctl -lu haproxy -o cat
+    register: haproxy_logs
+  - name: Print haproxy logs
+    debug: msg="{{ haproxy_logs }}"
+
+
+
+- hosts: apps
+  gather_facts: false
+  tasks:
+  - name: Check backend app on port 8080 
     uri:
-      url: "http://{{ inventory_hostname }}"
+      url: "http://{{ inventory_hostname }}:8080"
       return_content: yes
     register: webpage
+  - name: Print backend result
+    debug: msg="{{ webpage }}"
 
-  - name: Fail if 'Ansible has done its job' is not in the page content
-    fail:
-    when: "'Ansible has done its job' not in webpage.content"
-    tags:
-      - osp.smoke
+
+
+#DFW#- hosts: frontends
+#DFW#  gather_facts: false
+#DFW#  tasks:
+#DFW#  - name: Use Uri module for wrting smoke test.
+#DFW#    uri:
+#DFW#      url: "http://{{ inventory_hostname }}"
+#DFW#      return_content: yes
+#DFW#    register: webpage
+#DFW#
+#DFW#  - name: Fail if 'Ansible has done its job' is not in the page content
+#DFW#    fail:
+#DFW#    when: "'Ansible has done its job' not in webpage.content"
+#DFW#    tags:
+#DFW#      - osp.smoke
