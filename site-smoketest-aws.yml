@@ -26,9 +26,12 @@
       url: "http://{{ inventory_hostname }}:8080"
       return_content: yes
     register: webpage
+
   - name: Print backend result
     debug: msg="{{ webpage }}"
 
+  - name: Print ansible_hostname
+    debug: msg="{{ ansible_hostname }}"
 
 
 #DFW#- hosts: frontends
