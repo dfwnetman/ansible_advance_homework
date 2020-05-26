@@ -13,6 +13,12 @@
     when: >-
       'frontends' in group_names
 
+  - name: Print ALL facts for 54_157_217_106
+    debug:
+      msg: "{{ hostvars['54.157.217.106'] }}"
+    when: >-
+      'frontends' in group_names
+
 
 
 #DFW A#
