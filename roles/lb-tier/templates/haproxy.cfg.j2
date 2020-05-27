@@ -26,6 +26,6 @@ backend app-servers
   balance roundrobin
   option forwardfor
 {% for appsrv in groups[three_tier_frontend_app_group_name] %}
-  server {{ hostvars[appsrv].ansible_hostname }} {{ hostvars[appsrv].ansible_default_ipv4.address }}:8080 cookie {{ hostvars[appsrv].an
+  server {{ hostvars[appsrv].ansible_hostname }} {{ hostvars[appsrv].ansible_default_ipv4.address }}:8080 cookie {{ hostvars[appsrv].ansible_hostname }} check
 {% endfor %}
 
