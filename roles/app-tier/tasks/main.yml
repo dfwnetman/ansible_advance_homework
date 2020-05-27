@@ -1,44 +1,47 @@
 ---
-# tasks file for app-tier
+# Tasks file for app-tier
 # Deploy tomcat
-  - name: install tomcat
+  - name: Install tomcat
     package:
       name: tomcat
       state: latest
-  - name: enable tomcat at boot
+
+  - name: Enable tomcat at boot
     service:
       name: tomcat
       enabled: yes
 
-  - name: create ansible tomcat directory
+  - name: Create ansible tomcat directory
     file:
       path: /usr/share/tomcat/webapps/ROOT
       state: directory
 
-  - name: copy static index.html to tomcat webapps/ansible/index.html
+  - name: Copy static index.html to tomcat webapps/ansible/index.html
     template:
       src: index.html.j2
       dest: /usr/share/tomcat/webapps/ROOT/index.html
       mode: 0644
 
-  - name: start tomcat
+  - name: Start tomcat
     service:
       name: tomcat
       state: started
 
+
 # Create index.html on app VMs
-  - name: create ansible tomcat directory
+  - name: Create ansible tomcat directory
     file:
       path: /usr/share/tomcat/webapps/ansible
       state: directory
 
-  - name: copy static index.html to tomcat webapps/ansible/index.html
+  - name: Copy static index.html to tomcat webapps/ansible/index.html
     template:
       src: index.html.app.j2
       dest: /usr/share/tomcat/webapps/ansible/index.html
 
+
 # Deploy apache
-  - name: install apache
+  - name: Install apache
     yum:
       name: httpd
       state: latest

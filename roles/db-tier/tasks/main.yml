@@ -1,15 +1,15 @@
 ---
-# tasks file for db-tier
+# Tasks file for db-tier
 # Deploy postgres
-  - name: install progress
+  - name: Install progress
     command: "yum install -y postgresql-server"
 
-  #- name: install postgres
+  #- name: Install postgres
   #  yum:
   #    name: postgresql-server
   #    state: latest
 
-  - name: enable postgresql at boot
+  - name: Enable postgresql at boot
     service:
       name: postgresql
       enabled: yes
@@ -21,7 +21,7 @@
       patterns: "*"
     register: pgsql_data_dir_res
 
-  - name: initilize postgres
+  - name: Initilize postgres
     command: postgresql-setup initdb
     register: r_postgres_init
     failed_when: >-
@@ -29,7 +29,7 @@
       r_postgres_init.stdout != 'Data directory is not empty!'
     when: pgsql_data_dir_res.matched|int == 0
 
-  - name: start postgres
+  - name: Start postgres
     service:
       name: postgresql.service
       state: started
