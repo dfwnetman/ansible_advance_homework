@@ -1,6 +1,7 @@
 - hosts: frontends,apps
   gather_facts: true
   tasks:
+
 - hosts: frontends
   gather_facts: false
   tasks:

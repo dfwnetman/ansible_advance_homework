@@ -18,6 +18,7 @@
       file:
         path: /root/bin
         state: directory
+
     - name: Get script common.sh
       get_url:
         url: "{{ param_repo_base }}/scripts/common.sh"
@@ -29,11 +30,13 @@
         url: "{{ param_repo_base }}/scripts/jq-linux64"
         dest: /root/bin/jq
         mode: 0755
+
     - name: Get script order_svc.sh
       get_url:
         url: "{{ param_repo_base }}/scripts/order_svc.sh"
         dest: /root/order_svc.sh
         mode: 0755
+
     - name: Create credentials
       copy:
         content: |

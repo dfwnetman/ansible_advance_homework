@@ -1,5 +1,4 @@
 ---
-
 # tasks file for osp.servers
 - name: Create new server instances and attaches them a network and passes metadata to the instance
   os_server:
@@ -22,8 +21,6 @@
   loop_control:
     loop_var: t_os_server
     label: "{{ t_os_server.name }}"
-
-
 
 - name: Add floating IP to Servers
   os_floating_ip:
