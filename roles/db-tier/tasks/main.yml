@@ -1,13 +1,13 @@
 ---
 # Tasks file for db-tier
 # Deploy postgres
-  - name: Install progress
-    command: "yum install -y postgresql-server"
+  #- name: Install progress
+  #  command: "yum install -y postgresql-server"
 
-  #- name: Install postgres
-  #  yum:
-  #    name: postgresql-server
-  #    state: latest
+  - name: Install postgres
+    yum:
+      name: postgresql-server
+      state: latest
 
   - name: Enable postgresql at boot
     service:
