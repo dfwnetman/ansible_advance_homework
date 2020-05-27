@@ -6,7 +6,7 @@
       - haproxy
       - python2-httpie
       state: latest
-    when: three_tier_frontend_install_software
+    when: three_tier_frontend_install_software and 'frontends' in group_names
 
 #DFW#  - name: Configure OSP/QA haproxy
 #DFW#    template:
@@ -20,14 +20,14 @@
       msg: "{% for appsrv in groups[three_tier_frontend_app_group_name] %}
               {{ hostvars[appsrv] }}
              {% endfor %}"
-    when: ansible_virtualization_type=='openstack'
+    when: ansible_virtualization_type=='openstack' and 'frontends' in group_names
 
   - name: Print AWS/Prod hostvars
     debug:
       msg: "{% for appsrv in groups[three_tier_frontend_app_group_name] %}
               {{ hostvars[appsrv].ec2_tag_aws_cloudformation_logical_id }}
              {% endfor %}"
-    when: ansible_virtualization_type!='openstack'
+    when: ansible_virtualization_type!='openstack' and 'frontends' in group_names
 
 
 
@@ -35,7 +35,7 @@
     template:
       src: haproxy.cfg_aws.j2
       dest: /etc/haproxy/haproxy.cfg
-    when: ansible_virtualization_type!='openstack'
+    when: ansible_virtualization_type!='openstack' and 'frontends' in group_names
     notify: restart-haproxy
   
   - name: Start and enable HAProxy

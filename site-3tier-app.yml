@@ -19,7 +19,7 @@
   hosts: frontends,apps
   gather_facts: true
   become: true
-  hosts: frontends
+  #DFW#hosts: frontends
 
   roles:
   - {name: base-config, tags: base-config}
