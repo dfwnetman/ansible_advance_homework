@@ -8,12 +8,12 @@
       state: latest
     when: three_tier_frontend_install_software and 'frontends' in group_names
 
-#DFW#  - name: Configure OSP/QA haproxy
-#DFW#    template:
-#DFW#      src: haproxy.cfg.j2
-#DFW#      dest: /etc/haproxy/haproxy.cfg
-#DFW#    when: ansible_virtualization_type=='openstack'
-#DFW#    notify: restart-haproxy
+  - name: Configure OSP/QA haproxy
+    template:
+      src: haproxy.cfg.j2
+      dest: /etc/haproxy/haproxy.cfg
+    when: ansible_virtualization_type=='openstack' and 'frontends' in group_names
+    notify: restart-haproxy
   
   - name: Print OSP/QA hostvars
     debug:
@@ -43,5 +43,6 @@
       name: haproxy
       state: started
       enabled: true
+    when: "'frontends' in group_names"
 
 
